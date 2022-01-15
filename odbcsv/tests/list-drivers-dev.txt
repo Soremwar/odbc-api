@@ -6,3 +6,6 @@ SQLite
 
 SQLite3
 	Description=SQLite3 ODBC Driver
+
+MariaDB 3.1 Driver
+	Description=MariaDB Connector/ODBC v3.1
