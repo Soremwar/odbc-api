@@ -21,12 +21,8 @@ jobs:
       - name: Build
         run: cargo build --release
 
-      - name: Run Microsoft SQL Server
-        uses: potatoqualitee/mssqlsuite@v1
-        with:
-          install: sqlengine, sqlclient, sqlpackage, localdb
-          sa-password: <YourStrong@Passw0rd>
-          show-log: true
+      - name: Setup database services
+        run: docker-compose up -d mssql mariadb
 
       - name: Test
         run: cargo test --release -- --skip maria_db --skip sqlite_3
@@ -58,7 +54,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Insall latests rust toolchain
+      - name: Install latests rust toolchain
         uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
@@ -72,29 +68,6 @@ jobs:
     name: Build & Test Linux
     runs-on: ubuntu-20.04
 
-    # Database services used for testing
-    services:
-      # Microsoft SQL Server
-      sqlserver:
-        image: mcr.microsoft.com/mssql/server:2019-latest
-        ports:
-        - 1433:1433
-        env:
-          ACCEPT_EULA: Y
-          SA_PASSWORD: <YourStrong@Passw0rd>
-
-      # Maria DB test stopped working on Ubuntu after driver update
-
-      # Maria DB
-      # mariadb:
-      #   image: mariadb
-      #   ports:
-      #   - 3306:3306
-      #   env:
-      #     MYSQL_ROOT_PASSWORD: my-secret-pw
-      #     MYSQL_DATABASE: test_db
-
-
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -105,13 +78,16 @@ jobs:
           toolchain: stable
           default: true
           override: true
+
       - name: Build
         run: cargo build --release
+
       # We currently do not test against PostgreSQL, but the time will come leave this
       # in for reference
       # - name: Install PostgreSQL Driver
       #   run: |
       #     sudo apt-get install -y unixodbc-dev odbc-postgresql devscripts
+
       - name: Install ODBC Drivers
         run: |
           curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
@@ -124,12 +100,17 @@ jobs:
           sed --in-place 's/libsqliteodbc.so/\/usr\/lib\/x86_64-linux-gnu\/odbc\/libsqliteodbc.so/' /etc/odbcinst.ini
           apt-get install -y odbc-mariadb
         shell: sudo bash {0}
+
       - name: Print odbcinst.ini
         run: cat /etc/odbcinst.ini
+
       - name: Copy test expectations
         run: cp odbcsv/tests/list-drivers-dev.txt odbcsv/tests/list-drivers.txt
+
+      - name: Setup database services
+        run: docker-compose up -d mssql mariadb
+
       - name: Test
-        run: |
-          export RUST_LOG="DEBUG"
-          # Maria DB stopped working on ubuntu test runner after driver update
-          cargo test --release -- --skip maria_db
+        run: cargo test --release
+        env:
+          RUST_LOG: DEBUG
