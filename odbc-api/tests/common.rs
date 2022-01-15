@@ -15,7 +15,7 @@ lazy_static! {
 }
 
 /// Used to adapt test behaviour to different drivers and datasources
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct Profile {
     /// Connection string used to connect with the data source
     pub connection_string: &'static str,
