@@ -36,7 +36,7 @@ jobs:
           database: test_db
 
       - name: Setup MariaDB
-        run: mysql -D test_db -e "ALTER USER 'root'@'localhost' IDENTIFIED BY 'my-secret-pw';FLUSH PRIVILEGES;EXIT"
+        run: mysql -D test_db -e "ALTER USER 'root'@'localhost' IDENTIFIED BY 'my-secret-pw';flush privileges;exit"
 
       - name: Setup database services
         run: docker-compose up -d mariadb
