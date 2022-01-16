@@ -26,7 +26,7 @@ jobs:
       - name: Run Microsoft SQL Server
         uses: potatoqualitee/mssqlsuite@v1
         with:
-          install: sqlengine, sqlclient, sqlpackage, localdb
+          install: sqlengine, sqlclient
           sa-password: <YourStrong@Passw0rd>
           show-log: true
 
