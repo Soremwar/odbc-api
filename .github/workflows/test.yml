@@ -18,14 +18,11 @@ jobs:
           default: true
           override: true
 
-      - name: Try
-        run: powershell -command '& "$Env:ProgramFiles\Docker\Docker\DockerCli.exe" -SwitchDaemon'
-
       - name: Build
         run: cargo build --release
 
       - name: Setup database services
-        run: docker-compose up -d mssql mariadb
+        run: docker-compose up -d mssql_windows mariadb
 
       - name: Test
         run: cargo test --release -- --skip maria_db --skip sqlite_3
