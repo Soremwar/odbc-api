@@ -38,9 +38,6 @@ jobs:
       - name: Setup MariaDB
         run: mysql -D test_db -e "ALTER USER 'root'@'localhost' IDENTIFIED BY 'my-secret-pw';flush privileges;"
 
-      - name: Setup database services
-        run: docker-compose up -d mariadb
-
       - name: Test
         run: cargo test --release -- --skip sqlite_3
 
