@@ -295,22 +295,40 @@ fn insert_with_nulls() {
 /// intended to provide a test for dev container or CI setups there the installed drivers are
 /// controlled by this repository, but gracefully skip, if we run natively on a developer machine
 /// with a different set of drivers installed.
-// TODO(Soremwar)
-// Redo test by evaluation each block individually instead of the whole output
-// #[test]
-// fn list_drivers() {
-//     if let Ok(mut expectation) = File::open("tests/list-drivers.txt") {
-//         let mut buf = String::new();
-//         expectation.read_to_string(&mut buf).unwrap();
+#[test]
+fn list_drivers() {
+    if let Ok(mut expectation_file) = File::open("tests/list-drivers.txt") {
+        let mut expectations = String::new();
+        expectation_file.read_to_string(&mut expectations).unwrap();
 
-//         Command::cargo_bin("odbcsv")
-//             .unwrap()
-//             .args(&["-vvvv", "list-drivers"])
-//             .assert()
-//             .success()
-//             .stdout(buf);
-//     }
-// }
+        let mut command = Command::cargo_bin("odbcsv").unwrap();
+        let odbcsv = command.args(&["-vvvv", "list-drivers"]);
+        odbcsv.assert().success();
+        let output = String::from_utf8(odbcsv.output().unwrap().stdout).unwrap();
+
+        let installed_drivers: Vec<&str> = output
+            .lines()
+            .filter(|&maybe_driver| {
+                maybe_driver != ""
+                    && !maybe_driver.starts_with(" ")
+                    && !maybe_driver.starts_with("\t")
+            })
+            .collect();
+
+        let not_configured_drivers: Vec<&str> = expectations
+            .trim_end()
+            .lines()
+            .filter(|driver| !installed_drivers.contains(driver))
+            .collect();
+
+        if not_configured_drivers.len() > 0 {
+            panic!(
+                "'{}' drivers are not configured in the system",
+                not_configured_drivers.join(", ")
+            );
+        }
+    }
+}
 
 /// Creates the table and assures it is empty. Columns are named a,b,c, etc.
 pub fn setup_empty_table(
