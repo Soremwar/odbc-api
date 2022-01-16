@@ -22,7 +22,7 @@ jobs:
         run: cargo build --release
 
       - name: Install MariaDB drivers
-        run: choco install mysql.odbc
+        run: choco install mariadb
 
       - run: |
          cargo install odbcsv
