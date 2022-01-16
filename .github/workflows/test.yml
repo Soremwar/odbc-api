@@ -19,7 +19,7 @@ jobs:
           override: true
 
       - name: Try
-        run: powershell -command "& $Env:ProgramFiles\Docker\Docker\DockerCli.exe -SwitchDaemon"
+        run: powershell -command '& "$Env:ProgramFiles\Docker\Docker\DockerCli.exe" -SwitchDaemon'
 
       - name: Build
         run: cargo build --release
