@@ -1,20 +1,6 @@
 services:
-
   mssql:
     image: mcr.microsoft.com/mssql/server:2019-latest
-    ports:
-      - 1433:1433
-    environment:
-      - MSSQL_SA_PASSWORD=<YourStrong@Passw0rd>
-    command:
-      [
-        "/opt/mssql/bin/sqlservr",
-        "--accept-eula",
-        "--reset-sa-password"
-      ]
-
-  mssql_windows:
-    image: microsoft/mssql-server-windows-developer
     ports:
       - 1433:1433
     environment:

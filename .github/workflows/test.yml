@@ -21,11 +21,20 @@ jobs:
       - name: Build
         run: cargo build --release
 
+      # This needs to be run independently because docker on win64 doesn't support
+      # linux containers
+      - name: Run Microsoft SQL Server
+        uses: potatoqualitee/mssqlsuite@v1
+        with:
+          install: sqlengine, sqlclient, sqlpackage, localdb
+          sa-password: <YourStrong@Passw0rd>
+          show-log: true
+
       - name: Setup database services
-        run: docker-compose up -d mssql_windows mariadb
+        run: docker-compose up -d mariadb
 
       - name: Test
-        run: cargo test --release -- --skip maria_db --skip sqlite_3
+        run: cargo test --release -- --skip sqlite_3
 
   win32:
     name: Build Win32
