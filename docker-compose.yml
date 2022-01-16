@@ -6,7 +6,12 @@ services:
       - 1433:1433
     environment:
       - MSSQL_SA_PASSWORD=<YourStrong@Passw0rd>
-    command: ["/opt/mssql/bin/sqlservr", "--accept-eula", "--reset-sa-password"]
+    command:
+      [
+        "/opt/mssql/bin/sqlservr",
+        "--accept-eula",
+        "--reset-sa-password"
+      ]
 
   mariadb:
     image: mariadb
@@ -17,7 +22,7 @@ services:
       - 3306:3306
 
   dev:
-    build: docker/dev
+    build: .
     volumes:
       - .:/workspace:cached
 
@@ -26,3 +31,13 @@ services:
 
     # Allows accessing dbs through the port forwardings. dev container behaves like host for networking
     network_mode: host
+
+  test_linux:
+    build: .
+    # Firing up the databases will take a while, fortunately so does compilating the library
+    depends_on:
+      - mssql
+      - mariadb
+    network_mode: host
+    environment:
+      RUST_LOG: DEBUG

@@ -295,20 +295,22 @@ fn insert_with_nulls() {
 /// intended to provide a test for dev container or CI setups there the installed drivers are
 /// controlled by this repository, but gracefully skip, if we run natively on a developer machine
 /// with a different set of drivers installed.
-#[test]
-fn list_drivers() {
-    if let Ok(mut expectation) = File::open("tests/list-drivers.txt") {
-        let mut buf = String::new();
-        expectation.read_to_string(&mut buf).unwrap();
+// TODO(Soremwar)
+// Redo test by evaluation each block individually instead of the whole output
+// #[test]
+// fn list_drivers() {
+//     if let Ok(mut expectation) = File::open("tests/list-drivers.txt") {
+//         let mut buf = String::new();
+//         expectation.read_to_string(&mut buf).unwrap();
 
-        Command::cargo_bin("odbcsv")
-            .unwrap()
-            .args(&["-vvvv", "list-drivers"])
-            .assert()
-            .success()
-            .stdout(buf);
-    }
-}
+//         Command::cargo_bin("odbcsv")
+//             .unwrap()
+//             .args(&["-vvvv", "list-drivers"])
+//             .assert()
+//             .success()
+//             .stdout(buf);
+//     }
+// }
 
 /// Creates the table and assures it is empty. Columns are named a,b,c, etc.
 pub fn setup_empty_table(

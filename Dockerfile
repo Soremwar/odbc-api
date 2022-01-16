@@ -31,15 +31,19 @@ RUN sed --in-place 's/libsqlite3odbc.so/\/usr\/lib\/x86_64-linux-gnu\/odbc\/libs
 RUN sed --in-place 's/libsqliteodbc.so/\/usr\/lib\/x86_64-linux-gnu\/odbc\/libsqliteodbc.so/' /etc/odbcinst.ini
 
 # Install MariaDB driver from tar bundle
-COPY mariadb-connector-odbc-3.1.11-debian-buster-amd64.tar.gz .
-COPY mariadb_odbc_template.ini .
+COPY docker/dev/mariadb-connector-odbc-3.1.11-debian-buster-amd64.tar.gz .
+COPY docker/dev/mariadb_odbc_template.ini .
 RUN tar -xf mariadb-connector-odbc-3.1.11-debian-buster-amd64.tar.gz
 RUN cp mariadb-connector-odbc-3.1.11-debian-buster-amd64/lib/mariadb/libmaodbc.so /usr/lib/x86_64-linux-gnu/odbc/libmaodbc.so
 RUN odbcinst -i -d -f mariadb_odbc_template.ini
 
-# Setup cargo and install cargo packages required for tests
-USER vscode
-
 # There is also a rust devcontainer, yet this way we get a toolchain
 # which is updatable with rustup.
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --default-toolchain stable -y
+
+# Setup workspace
+WORKDIR /workspace
+COPY . .
+RUN cp odbcsv/tests/list-drivers-dev.txt odbcsv/tests/list-drivers.txt
+
+CMD ~/.cargo/bin/cargo test --release
