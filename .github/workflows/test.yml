@@ -22,7 +22,9 @@ jobs:
         run: cargo build --release
 
       - name: Install MariaDB drivers
-        run: choco install mariadb
+        run: |
+         Invoke-WebRequest https://dlm.mariadb.com/1920029/MariaDB/mariadb-10.6.5/winx64-packages/mariadb-10.6.5-winx64.msi -OutFile C:\mariadb_connector.msi
+         msiexec /i "C:\mariadb_connector.msi"
 
       - run: |
          cargo install odbcsv
