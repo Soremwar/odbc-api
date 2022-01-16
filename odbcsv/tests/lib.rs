@@ -309,6 +309,7 @@ fn list_drivers() {
         let installed_drivers: Vec<&str> = output
             .lines()
             .filter(|&maybe_driver| {
+                // Only look at the driver names, no need to check for descriptions (parameters are indented)
                 maybe_driver != ""
                     && !maybe_driver.starts_with(" ")
                     && !maybe_driver.starts_with("\t")

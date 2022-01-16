@@ -30,6 +30,9 @@ jobs:
           sa-password: <YourStrong@Passw0rd>
           show-log: true
 
+      - name: Install MariaDB drivers
+        run: choco install mysql.odbc
+
       - name: Run MariaDB
         uses: ankane/setup-mariadb@v1
         with:
