@@ -21,6 +21,13 @@ jobs:
       - name: Build
         run: cargo build --release
 
+      - name: Install MariaDB drivers
+        run: choco install mysql.odbc
+
+      - run: |
+         cargo install odbcsv
+         odbcsv -vvvv list-drivers
+
       # Databases need to be run independently because docker on win64 doesn't support
       # linux containers
       - name: Run Microsoft SQL Server
@@ -29,9 +36,6 @@ jobs:
           install: sqlengine, sqlclient
           sa-password: <YourStrong@Passw0rd>
           show-log: true
-
-      - name: Install MariaDB drivers
-        run: choco install mysql.odbc
 
       - name: Run MariaDB
         uses: ankane/setup-mariadb@v1
