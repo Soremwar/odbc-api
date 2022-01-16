@@ -21,7 +21,7 @@ jobs:
       - name: Build
         run: cargo build --release
 
-      # This needs to be run independently because docker on win64 doesn't support
+      # Databases need to be run independently because docker on win64 doesn't support
       # linux containers
       - name: Run Microsoft SQL Server
         uses: potatoqualitee/mssqlsuite@v1
@@ -29,6 +29,14 @@ jobs:
           install: sqlengine, sqlclient, sqlpackage, localdb
           sa-password: <YourStrong@Passw0rd>
           show-log: true
+
+      - name: Run MariaDB
+        uses: ankane/setup-mariadb@v1
+        with:
+          database: test_db
+
+      - name: Setup MariaDB
+        run: mysql -D test_db -e "ALTER USER 'root'@'localhost' IDENTIFIED BY 'my-secret-pw';FLUSH PRIVILEGES;EXIT;"
 
       - name: Setup database services
         run: docker-compose up -d mariadb
