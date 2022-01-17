@@ -23,7 +23,6 @@ jobs:
         with:
           arch: win64
 
-      Enable before merge
       - name: Build
         run: cargo build --release
 
