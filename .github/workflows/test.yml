@@ -23,8 +23,8 @@ jobs:
 
       - name: Install MariaDB drivers
         run: |
-         Invoke-WebRequest https://dlm.mariadb.com/1936299/Connectors/c/connector-c-3.1.15/mariadb-connector-c-3.1.15-win64.msi -OutFile C:\mariadb_connector.msi
-         Start-Process msiexec -ArgumentList "/i C:\mariadb_connector.msi /qb+" -wait
+         Invoke-WebRequest https://dlm.mariadb.com/1936453/Connectors/odbc/connector-odbc-3.1.15/mariadb-connector-odbc-3.1.15-win64.msi -OutFile C:\mariadb_connector.msi
+         Start-Process msiexec -ArgumentList "/i C:\mariadb_connector.msi /qn" -wait
 
       - run: |
          cargo install odbcsv
