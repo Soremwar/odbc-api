@@ -44,7 +44,7 @@ jobs:
       
       - name: Compile SQLite drivers
         working-directory: C:\sqliteodbc-0.9998
-        run: nmake -f sqlite3odbc.mak
+        run: nmake -f sqlite3odbc.mak sqlite3odbc.dll
 
       - run: ls C:\sqliteodbc-0.9998
 
