@@ -29,8 +29,9 @@ jobs:
 
       - name: Install SQLite drivers
         run : |
-         Invoke-WebRequest http://www.ch-werner.de/sqliteodbc/sqliteodbc_w64.exe -OutFile C:\sqlite_connector.exe
-         cscript docker/dev/install_sqlite_drivers.vbs
+         mkdir "C:\Program Files\SQLite ODBC Driver for Win64"
+         Copy-Item -Path "docker\dev\sqlite_odbc\*" -Destination "C:\Program Files\SQLite ODBC Driver for Win64" -Recurse
+         ls "C:\Program Files\SQLite ODBC Driver for Win64"
 
       - run: |
          cargo install odbcsv
