@@ -32,6 +32,10 @@ jobs:
          mkdir "C:\Program Files\SQLite ODBC Driver for Win64"
          Copy-Item -Path "docker\dev\sqlite_odbc\*" -Destination "C:\Program Files\SQLite ODBC Driver for Win64" -Recurse
          ls "C:\Program Files\SQLite ODBC Driver for Win64"
+         REG ADD "HKLM\SOFTWARE\ODBC\ODBCINST.INI\ODBC Drivers" /v "SQLite3 ODBC Driver" /t REG_SZ /d Installed /f
+         REG ADD "HKLM\SOFTWARE\ODBC\ODBCINST.INI\SQLite3 ODBC Driver" /v "Driver" /t REG_SZ /d "C:\Program Files\SQLite ODBC Driver for Win64\sqlite3odbc.dll" /f
+         REG ADD "HKLM\SOFTWARE\ODBC\ODBCINST.INI\SQLite3 ODBC Driver" /v "Setup" /t REG_SZ /d "C:\Program Files\SQLite ODBC Driver for Win64\sqlite3odbc.dll" /f
+         REG ADD "HKLM\SOFTWARE\ODBC\ODBCINST.INI\SQLite3 ODBC Driver" /v "UsageCount" /t REG_DWORD /d 1
 
       - run: |
          cargo install odbcsv
