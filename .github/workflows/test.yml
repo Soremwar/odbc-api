@@ -20,6 +20,8 @@ jobs:
 
       - name: Setup C++ build tools
         uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: win64
 
       # Enable before merge
       # - name: Build
@@ -44,7 +46,11 @@ jobs:
       
       - name: Compile SQLite drivers
         working-directory: C:\sqliteodbc-0.9998
-        run: nmake -f sqlite3odbc.mak sqlite3odbc.dll
+        run: |
+         cl -I. -Gs -GX -D_WIN64 -D_DLL -nologo   -DHAVE_SQLITE3COLUMNTABLENAME=1  -DHAVE_SQLITE3PREPAREV2=1  -DHAVE_SQLITE3VFS=1  -DHAVE_SQLITE3LOADEXTENSION=1  -DSQLITE_ENABLE_COLUMN_METADATA=1  -DWITHOUT_SHELL=1 /c sqlite3odbc.c
+         cl -I. -Gs -GX -D_WIN64 -D_DLL -nologo   -DHAVE_SQLITE3COLUMNTABLENAME=1  -DHAVE_SQLITE3PREPAREV2=1  -DHAVE_SQLITE3VFS=1  -DHAVE_SQLITE3LOADEXTENSION=1  -DSQLITE_ENABLE_COLUMN_METADATA=1  -DWITHOUT_SHELL=1 /c sqlite3.c
+         rc -I. -fo sqlite3odbc.res -r sqlite3odbc.rc
+         link /NODEFAULTLIB /RELEASE /NOLOGO /MACHINE:X64  /SUBSYSTEM:WINDOWS /DLL sqlite3odbc.obj sqlite3.obj sqlite3odbc.res  -def:sqlite3odbc.def -out:sqlite3odbc.dll msvcrt.lib odbccp.lib kernel.lib  user.lib comdlg.lib
 
       - run: ls C:\sqliteodbc-0.9998
 
