@@ -23,15 +23,15 @@ jobs:
         with:
           arch: win64
 
-      # Enable before merge
-      # - name: Build
-      #   run: cargo build --release
+      Enable before merge
+      - name: Build
+        run: cargo build --release
 
       - name: Install MariaDB drivers
         run: |
          Invoke-WebRequest https://dlm.mariadb.com/1936453/Connectors/odbc/connector-odbc-3.1.15/mariadb-connector-odbc-3.1.15-win64.msi -OutFile C:\mariadb_connector.msi
          Start-Process msiexec -ArgumentList "/i C:\mariadb_connector.msi /qn" -wait
-      
+
       # Extract all files from installer
       - name: Install SQLite drivers
         run: |
@@ -40,11 +40,7 @@ jobs:
          REG ADD "HKLM\SOFTWARE\ODBC\ODBCINST.INI\ODBC Drivers" /v "SQLite3 ODBC Driver" /t REG_SZ /d Installed /f
          REG ADD "HKLM\SOFTWARE\ODBC\ODBCINST.INI\SQLite3 ODBC Driver" /v "Driver" /t REG_SZ /d "C:\Program Files\SQLite ODBC Driver for Win64\sqlite3odbc.dll" /f
          REG ADD "HKLM\SOFTWARE\ODBC\ODBCINST.INI\SQLite3 ODBC Driver" /v "Setup" /t REG_SZ /d "C:\Program Files\SQLite ODBC Driver for Win64\sqlite3odbc.dll" /f
-         REG ADD "HKLM\SOFTWARE\ODBC\ODBCINST.INI\SQLite3 ODBC Driver" /v "UsageCount" /t REG_DWORD /d 1         
-
-      - run: |
-         cargo install odbcsv
-         odbcsv -vvvv list-drivers
+         REG ADD "HKLM\SOFTWARE\ODBC\ODBCINST.INI\SQLite3 ODBC Driver" /v "UsageCount" /t REG_DWORD /d 1
 
       # Databases need to be run independently because docker on win64 doesn't support
       # linux containers
@@ -81,7 +77,7 @@ jobs:
           target: i686-pc-windows-msvc
           default: true
           override: true
-      
+
       - name: Build
         run: cargo build --release
 
