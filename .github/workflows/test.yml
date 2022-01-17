@@ -30,11 +30,17 @@ jobs:
          Invoke-WebRequest https://dlm.mariadb.com/1936453/Connectors/odbc/connector-odbc-3.1.15/mariadb-connector-odbc-3.1.15-win64.msi -OutFile C:\mariadb_connector.msi
          Start-Process msiexec -ArgumentList "/i C:\mariadb_connector.msi /qn" -wait
 
+      # The SQLite source to be consumed by SQLite ODBC in order to compile from source
       - name: Download SQLite drivers
         run: |
          Invoke-WebRequest http://www.ch-werner.de/sqliteodbc/sqliteodbc-0.9998.tar.gz -OutFile C:\sqliteodbc-0.9998.tar.gz
          7z x C:\sqliteodbc-0.9998.tar.gz -oC:\
          7z x C:\sqliteodbc-0.9998.tar -oC:\
+         Invoke-WebRequest https://www.sqlite.org/2022/sqlite-amalgamation-3370200.zip -OutFile C:\sqlite-amalgamation-3370200.zip
+         7z x C:\sqlite-amalgamation-3370200.zip -oC:\
+         Copy-Item -Path "C:\sqlite-amalgamation-3370200\*" -Destination "C:\sqliteodbc-0.9998" -Recurse
+
+      - run: ls C:\sqliteodbc-0.9998
       
       - name: Compile SQLite drivers
         working-directory: C:\sqliteodbc-0.9998
