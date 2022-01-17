@@ -18,8 +18,9 @@ jobs:
           default: true
           override: true
 
-      - name: Build
-        run: cargo build --release
+      # Enable before merge
+      # - name: Build
+      #   run: cargo build --release
 
       - name: Install MariaDB drivers
         run: |
@@ -28,8 +29,8 @@ jobs:
 
       - name: Install SQLite drivers
         run : |
-         Invoke-WebRequest http://www.ch-werner.de/sqliteodbc/sqliteodbc-0.9997.exe -OutFile C:\sqlite_connector.exe
-         C:\sqlite_connector.exe
+         Invoke-WebRequest http://www.ch-werner.de/sqliteodbc/sqliteodbc_w64.exe -OutFile C:\sqlite_connector.exe
+         docker/dev/install_sqlite_drivers.vbs
 
       - run: |
          cargo install odbcsv
