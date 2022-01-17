@@ -44,7 +44,7 @@ jobs:
         run: mysql -D test_db -e "ALTER USER 'root'@'localhost' IDENTIFIED BY 'my-secret-pw';flush privileges;"
 
       - name: Test
-        run: cargo test --release -- --skip sqlite_3
+        run: cargo test --release
 
   win32:
     name: Build Win32
