@@ -30,7 +30,7 @@ jobs:
       - name: Install SQLite drivers
         run : |
          Invoke-WebRequest http://www.ch-werner.de/sqliteodbc/sqliteodbc_w64.exe -OutFile C:\sqlite_connector.exe
-         docker/dev/install_sqlite_drivers.vbs
+         cscript docker/dev/install_sqlite_drivers.vbs
 
       - run: |
          cargo install odbcsv
