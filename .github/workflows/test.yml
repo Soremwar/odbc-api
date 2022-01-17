@@ -35,10 +35,12 @@ jobs:
          Invoke-WebRequest http://www.ch-werner.de/sqliteodbc/sqliteodbc-0.9998.tar.gz -OutFile C:\sqliteodbc-0.9998.tar.gz
          7z x C:\sqliteodbc-0.9998.tar.gz -oC:\
          7z x C:\sqliteodbc-0.9998.tar -oC:\
-         ls C:\sqliteodbc-0.9998
       
-      - name: Does this have nmake?
-        run: nmake
+      - name: Compile SQLite drivers
+        working-directory: C:\sqliteodbc-0.9998
+        run: nmake -f sqlite3odbc.mak
+
+      - run: ls C:\sqliteodbc-0.9998
 
       - name: Fail early
         run: exit 1
