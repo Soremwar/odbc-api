@@ -18,11 +18,6 @@ jobs:
           default: true
           override: true
 
-      - name: Setup C++ build tools
-        uses: ilammy/msvc-dev-cmd@v1
-        with:
-          arch: win64
-
       - name: Build
         run: cargo build --release
 
