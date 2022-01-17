@@ -28,13 +28,12 @@ jobs:
 
       # Databases need to be run independently because docker on win64 doesn't support
       # linux containers
-      - name: Run SQL Server
-        uses: ankane/setup-sqlserver@v1
+      - name: Run Microsoft SQL Server
+        uses: potatoqualitee/mssqlsuite@v1
         with:
-          accept-eula: true
-
-      - name: Setup SQL Server
-        run: sqlcmd -U SA -P "YourStrong!Passw0rd" -Q "sp_password @new = '<YourStrong@Passw0rd>', @loginame = 'sa';go;"
+          install: sqlengine, sqlclient
+          sa-password: <YourStrong@Passw0rd>
+          show-log: true
 
       - name: Run MariaDB
         uses: ankane/setup-mariadb@v1
