@@ -18,6 +18,9 @@ jobs:
           default: true
           override: true
 
+      - name: Setup C++ build tools
+        uses: ilammy/msvc-dev-cmd@v1
+
       # Enable before merge
       # - name: Build
       #   run: cargo build --release
@@ -33,6 +36,9 @@ jobs:
          7z x C:\sqliteodbc-0.9998.tar.gz -oC:\
          7z x C:\sqliteodbc-0.9998.tar -oC:\
          ls C:\sqliteodbc-0.9998
+      
+      - name: Does this have nmake?
+        run: nmake
 
       - name: Fail early
         run: exit 1
