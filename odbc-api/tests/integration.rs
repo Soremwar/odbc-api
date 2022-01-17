@@ -2779,6 +2779,7 @@ fn no_data(profile: &Profile) {
 }
 
 /// List tables for various data sources
+/// Table name comparison is insensitive on Windows
 #[test_case(MSSQL, "master,dbo,ListTables,TABLE,NULL"; "Microsoft SQL Server")]
 #[test_case(MARIADB, "test_db,NULL,ListTables,TABLE,"; "Maria DB")]
 #[test_case(SQLITE_3, "NULL,NULL,ListTables,TABLE,NULL"; "SQLite 3")]
@@ -2787,12 +2788,12 @@ fn list_tables(profile: &Profile, expected: &str) {
     let conn = profile.setup_empty_table(table_name, &["INTEGER"]).unwrap();
 
     let cursor = conn.tables(None, None, Some(table_name), None).unwrap();
-    let actual = cursor_to_string(cursor);
-
-    assert_eq!(expected, actual);
+    let actual = cursor_to_string(cursor).to_lowercase();
+    assert_eq!(expected.to_lowercase(), actual);
 }
 
 /// List tables for various data sources, using a preallocated statement
+/// Table name comparison is insensitive on Windows
 #[test_case(MSSQL, "master,dbo,ListTablesPreallocated,TABLE,NULL"; "Microsoft SQL Server")]
 #[test_case(MARIADB, "test_db,NULL,ListTablesPreallocated,TABLE,"; "Maria DB")]
 #[test_case(SQLITE_3, "NULL,NULL,ListTablesPreallocated,TABLE,NULL"; "SQLite 3")]
@@ -2804,9 +2805,9 @@ fn list_tables_preallocated(profile: &Profile, expected: &str) {
     let cursor = preallocated
         .tables(None, None, Some(table_name), None)
         .unwrap();
-    let actual = cursor_to_string(cursor);
+    let actual = cursor_to_string(cursor).to_lowercase();
 
-    assert_eq!(expected, actual);
+    assert_eq!(expected.to_lowercase(), actual);
 }
 
 // TODO(Soremwar)
