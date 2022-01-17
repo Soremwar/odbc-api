@@ -911,9 +911,7 @@ fn columnar_insert_varchar(profile: &Profile) {
 
 #[test_case(MSSQL; "Microsoft SQL Server")]
 #[test_case(MARIADB; "Maria DB")]
-// TODO(Soremwar)
-// Reenable test case
-// #[test_case(SQLITE_3; "SQLite 3")]
+#[test_case(SQLITE_3; "SQLite 3")]
 fn columnar_insert_text_as_sql_integer(profile: &Profile) {
     let table_name = "ColumnarInsertTextAsSqlInteger";
     // Setup
