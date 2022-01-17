@@ -59,6 +59,9 @@ jobs:
       - name: Setup MariaDB
         run: mysql -D test_db -e "ALTER USER 'root'@'localhost' IDENTIFIED BY 'my-secret-pw';flush privileges;"
 
+      - name: Setup driver expectations
+        run: cp odbcsv/tests/list-drivers-windows.txt odbcsv/tests/list-drivers.txt
+
       - name: Test
         run: cargo test --release
 
