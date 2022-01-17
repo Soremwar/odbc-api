@@ -322,7 +322,7 @@ fn list_drivers() {
             .filter(|driver| !installed_drivers.contains(driver))
             .collect();
 
-        if not_configured_drivers.len() > 0 {
+        if not_configured_drivers.is_empty() {
             panic!(
                 "'{}' drivers are not configured in the system",
                 not_configured_drivers.join(", ")
