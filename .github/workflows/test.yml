@@ -26,6 +26,15 @@ jobs:
          Invoke-WebRequest https://dlm.mariadb.com/1936453/Connectors/odbc/connector-odbc-3.1.15/mariadb-connector-odbc-3.1.15-win64.msi -OutFile C:\mariadb_connector.msi
          Start-Process msiexec -ArgumentList "/i C:\mariadb_connector.msi /qn" -wait
 
+      - name: Install SQLite drivers
+        run : |
+         Invoke-WebRequest http://www.ch-werner.de/sqliteodbc/sqliteodbc-0.9997.exe -OutFile C:\sqlite_connector.exe
+         C:\sqlite_connector.exe
+
+      - run: |
+         cargo install odbcsv
+         odbcsv -vvvv list-drivers
+
       # Databases need to be run independently because docker on win64 doesn't support
       # linux containers
       - name: Run Microsoft SQL Server
