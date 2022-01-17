@@ -590,9 +590,7 @@ fn columnar_fetch_binary(profile: &Profile) {
 /// Bind a columnar buffer to a DATETIME2 column and fetch data.
 #[test_case(MSSQL; "Microsoft SQL Server")]
 // #[test_case(MARIADB; "Maria DB")] No DATEIME2 type
-// TODO(Soremwar)
-// Reenable test case
-// #[test_case(SQLITE_3; "SQLite 3")]
+#[test_case(SQLITE_3; "SQLite 3")]
 fn columnar_fetch_timestamp(profile: &Profile) {
     let table_name = "ColumnarFetchTimestamp";
     // Setup
@@ -1763,9 +1761,7 @@ fn read_into_columnar_buffer(profile: &Profile) {
 /// binding the buffers. This test constructs a result set with 3 columns and ignores the second
 #[test_case(MSSQL; "Microsoft SQL Server")]
 #[test_case(MARIADB; "Maria DB")]
-// TODO(Soremwar)
-// Reenable test case
-// #[test_case(SQLITE_3; "SQLite 3")]
+#[test_case(SQLITE_3; "SQLite 3")]
 fn ignore_output_column(profile: &Profile) {
     let conn = profile
         .setup_empty_table("IgnoreOutputColumn", &["INTEGER", "INTEGER", "INTEGER"])
