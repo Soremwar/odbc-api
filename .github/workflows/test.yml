@@ -23,9 +23,9 @@ jobs:
 
       - name: Install MariaDB drivers
         run: |
-         Invoke-WebRequest https://dlm.mariadb.com/1920029/MariaDB/mariadb-10.6.5/winx64-packages/mariadb-10.6.5-winx64.msi -OutFile mariadb_connector.msi
-         msiexec /i "mariadb_connector.msi" /L*V "mariadb_connector.log" /qn
-         type "mariadb_connector.log"
+         Invoke-WebRequest https://dlm.mariadb.com/1920029/MariaDB/mariadb-10.6.5/winx64-packages/mariadb-10.6.5-winx64.msi -OutFile "C:\mariadb_connector.msi"
+         msiexec /i "C:\inexistent.msi" /L*V "C:\mariadb_connector.log" /qn
+         type "C:\mariadb_connector.log"
 
       - run: |
          cargo install odbcsv
